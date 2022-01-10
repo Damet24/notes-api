@@ -8,8 +8,15 @@ function GetNotes(request, response){
 }
 
 function CreateNote(request, response){
+  const example = {
+		description: "Ultima note de prueba",
+		important: false
+	}
+
+  if(JSON.stringify(Object.keys(request.body)) !== JSON.stringify(Object.keys(example))) return response.status(400).json(ResponseNormilize(400))
+
   Note.create(request.body)
-    .then(data => response.json(ResponseNormilize(data)))
+    .then(data => response.status(201).json(ResponseNormilize(data)))
 }
 
 function GetNote(request, response){
@@ -20,11 +27,18 @@ function GetNote(request, response){
 }
 
 async function UpdateNote(request, response){
+  const example = {
+		description: "Ultima note de prueba",
+		important: false
+	}
+
+  if(JSON.stringify(Object.keys(request.body)) !== JSON.stringify(Object.keys(example))) return response.status(400).json(ResponseNormilize(400))
+
   const note = await Note.findOne({ where: { id: request.params.id } })
   if(note !== null){
     note.set(request.body)
     const res = await note.save()
-    response.send(ResponseNormilize(res))
+    response.status(201).json(ResponseNormilize(res))
   }
   else response.json(ResponseNormilize(null))
 }

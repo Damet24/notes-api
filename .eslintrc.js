@@ -8,6 +8,9 @@ module.exports = {
   'parserOptions': {
     'ecmaVersion': 13
   },
+  "jest": {
+    "testEnvironment": 'node'
+  },
   'rules': {
     'indent': [
       'error',

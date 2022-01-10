@@ -3,11 +3,14 @@ const app = express()
 const routes = require('./routes')
 
 require('./databese')
+require('dotenv').config()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api', routes)
 
-app.listen(3000, () => console.log('Server on part', 3000))
+const server = app.listen(process.env.PORT, () => console.log('Server on part', process.env.PORT))
+
+module.exports = { app, server }
 
