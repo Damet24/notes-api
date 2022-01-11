@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --verbose --silent --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --verbose --silent --detectOpenHandles src/tests/user.test.js",
     "dev": "cross-env NODE_ENV=development nodemon ./src/index.js",
     "test:watch": "npm run test -- --watch"
   },
@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",

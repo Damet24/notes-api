@@ -10,7 +10,10 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/api', routes)
 
-const server = app.listen(process.env.PORT, () => console.log('Server on part', process.env.PORT))
+const isTesting = process.env.NODE_ENV === 'test'
+const PORT = isTesting ? process.env.PORT_TEST : process.env.PORT
+
+const server = app.listen(PORT, () => console.log('Server on part', PORT))
 
 module.exports = { app, server }
 

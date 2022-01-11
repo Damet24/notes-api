@@ -1,4 +1,7 @@
 const supertest = require('supertest')
+const { User } = require('../databese')
+const ResponseNormalize = require('../models/ResponseNormilize')
+const bcrypt = require('bcrypt')
 const { app } = require('../index')
 
 const api = supertest(app)
@@ -14,7 +17,21 @@ const initialNotes = [
 	},
 ]
 
+const initialUsers = [
+	{
+		username: 'damet',
+		name: 'Daniel',
+		passwordHash: bcrypt.hashSync('password', 10)
+	}
+]
+
+async function GetUsers(){
+	return ResponseNormalize(await User.findAll())
+}
+
 module.exports = {
 	api,
-	initialNotes
+	initialNotes,
+	initialUsers,
+	GetUsers
 }

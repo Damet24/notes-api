@@ -1,12 +1,17 @@
-const { Note, sequelize } = require('../databese/index')
+const { Note, User, sequelize } = require('../databese/index')
 const { server } = require('../index')
-const { api, initialNotes } = require('./helpers')
+const { api, initialNotes, initialUsers } = require('./helpers')
 
+let user = null
 
 beforeEach(async () => {
-	await Note.destroy({ where: {}, truncate: true })
-	await Note.create(initialNotes[0])
-	await Note.create(initialNotes[1])
+	await Note.destroy({ where: {}})
+	await User.destroy({ where: {}})
+
+	user = await User.create(initialUsers[0])
+
+	await Note.create({ ...initialNotes[0], userId: user.dataValues.id })
+	await Note.create({ ...initialNotes[1], userId: user.dataValues.id })
 })
 
 describe("get notes", () => {
