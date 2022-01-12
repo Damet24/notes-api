@@ -1,8 +1,8 @@
-const { Note } = require('../databese/index')
+const { Note } = require('../databese')
 const ResponseNormilize = require('../models/ResponseNormilize')
 
 function GetNotes(request, response){
-  Note.findAll().then(data => {
+  Note.findAll({ where: { userId: request.userId } }).then(data => {
     response.json(ResponseNormilize(data))
   })
 }
@@ -10,17 +10,17 @@ function GetNotes(request, response){
 function CreateNote(request, response){
   const example = {
 		description: "Ultima note de prueba",
-		important: false
+    important: false
 	}
 
   if(JSON.stringify(Object.keys(request.body)) !== JSON.stringify(Object.keys(example))) return response.status(400).json(ResponseNormilize(400))
 
-  Note.create(request.body)
+  Note.create({...request.body, userId: request.userId })
     .then(data => response.status(201).json(ResponseNormilize(data)))
 }
 
 function GetNote(request, response){
-  Note.findOne({where: { id: request.params.id }})
+  Note.findOne({where: { id: request.params.id, userId: request.userId }})
     .then(data => {
       response.json(ResponseNormilize(data))
     })
@@ -38,14 +38,14 @@ async function UpdateNote(request, response){
   if(note !== null){
     note.set(request.body)
     const res = await note.save()
-    response.status(201).json(ResponseNormilize(res))
+    return response.status(200).json(ResponseNormilize(res))
   }
   else response.json(ResponseNormilize(null))
 }
 
 async function DeleteNote(request, response){
   const note = await Note.findOne({ where: { id: request.params.id } })
-  if(note === null) return response.json(ResponseNormilize(note))
+  if(note === null) return response.json(ResponseNormilize(null))
   const res = await note.destroy()
   response.json(ResponseNormilize(res))
 }

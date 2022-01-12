@@ -9,10 +9,10 @@ async function CreateUser(request, response){
     passwordHash: "password"
   }
 
-  if(JSON.stringify(Object.keys(request.body)) !== JSON.stringify(Object.keys(example))) return response.status(400).json(ResponseNormilize(400))
+  if(JSON.stringify(Object.keys(request.body)) !== JSON.stringify(Object.keys(example))) return response.status(400).json(ResponseNormilize(400, 'Invalid data'))
 
   const _user = await User.findOne({ where: { username: request.body.username } })
-  if(_user !== null) return response.status(400).json(ResponseNormilize(400))
+  if(_user !== null) return response.status(400).json(ResponseNormilize(400, 'User already exists'))
 
   const { passwordHash, ...rest } = request.body
   const hash = bcrypt.hashSync(passwordHash, 10)
