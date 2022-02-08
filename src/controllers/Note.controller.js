@@ -13,6 +13,8 @@ function CreateNote(request, response){
     important: false
 	}
 
+  console.log(request.body)
+
   if(JSON.stringify(Object.keys(request.body)) !== JSON.stringify(Object.keys(example))) return response.status(400).json(ResponseNormilize(400))
 
   Note.create({...request.body, userId: request.userId })
